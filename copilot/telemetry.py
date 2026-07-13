@@ -98,6 +98,40 @@ def recommend_ops_actions(metrics: list[GateMetric]) -> list[dict[str, Any]]:
     return actions
 
 
+def sustainability_snapshot(now: datetime) -> dict[str, Any]:
+    """
+    Simulated arrival-mode split + estimated emissions avoided vs. an all-solo-drive baseline.
+    Grounded in typical mega-event mode-share ranges; meant to make the sustainability pillar
+    a visible, quantified signal for ops decisions (not just guidance text).
+    """
+    bucket = _time_bucket(now, minutes=2)
+    rng = random.Random(4_026_000_000 + bucket)
+
+    transit_pct = round(48 + rng.random() * 6, 1)
+    park_ride_pct = round(22 + rng.random() * 4, 1)
+    rideshare_pct = round(100 - transit_pct - park_ride_pct, 1)
+
+    attendees = 42000
+    avg_km_per_trip = 9.0
+    kg_co2_per_km_solo_drive = 0.192
+    kg_co2_per_km_transit = 0.041
+
+    non_solo_attendees = attendees * (transit_pct + park_ride_pct) / 100.0
+    baseline_kg = non_solo_attendees * avg_km_per_trip * kg_co2_per_km_solo_drive
+    actual_kg = non_solo_attendees * avg_km_per_trip * kg_co2_per_km_transit
+    co2_avoided_kg = max(0.0, baseline_kg - actual_kg)
+
+    return {
+        "arrival_mode_split_pct": {
+            "transit": transit_pct,
+            "park_and_ride": park_ride_pct,
+            "rideshare_or_taxi": rideshare_pct,
+        },
+        "estimated_co2_avoided_kg": round(co2_avoided_kg, 1),
+        "note": "Estimated vs. an all-solo-drive baseline for the same attendance; simulated for demo purposes.",
+    }
+
+
 def snapshot(now: datetime | None = None) -> dict[str, Any]:
     now = now or datetime.now(tz=timezone.utc)
     gates = get_gate_metrics(now)
@@ -116,5 +150,6 @@ def snapshot(now: datetime | None = None) -> dict[str, Any]:
             for g in gates
         ],
         "heuristic_actions": recommend_ops_actions(gates),
+        "sustainability": sustainability_snapshot(now),
     }
 

@@ -1,6 +1,20 @@
 ## StadiumOps Copilot (FIFA World Cup 2026)
 
-GenAI-enabled copilot that improves **stadium navigation + crowd operations** for FIFA World Cup 2026-style match days.
+GenAI-enabled copilot that enhances stadium operations and the tournament experience for **fans, organizers, volunteers, and venue staff** during FIFA World Cup 2026-style match days.
+
+### Problem statement → feature mapping
+
+| Challenge pillar | How this app addresses it |
+|---|---|
+| **Navigation** | Step-free/fastest route engine over a stadium graph (`copilot/routing.py`), turned into plain-language directions by the LLM |
+| **Crowd management** | Simulated real-time gate density/queue/incident telemetry + risk scoring, surfaced in the Ops Dashboard |
+| **Accessibility** | Step-free routing, accessible-queue timing, Sensory Relief Room + Guest Services routing, plus a WCAG-oriented UI (high-contrast/large-text modes, focus outlines) |
+| **Transportation** | Transit / Park & Ride / Rideshare-aware routing and last-mile guidance |
+| **Sustainability** | Live arrival-mode split (transit/park & ride/rideshare) and estimated CO2 avoided, shown in the Ops Dashboard; refill/waste-sorting guidance for fans |
+| **Multilingual assistance** | Fan responses in English/Spanish/French/Arabic; Ops responses in English/Spanish/French |
+| **Operational intelligence** | Per-gate risk scoring, incident counts, and prioritized heuristic actions feeding the GenAI layer |
+| **Real-time decision support** | GenAI-generated 15-minute action plans and shift briefings grounded in the live telemetry snapshot |
+| **Audience coverage** | **Fans** (Fan Assistant) and **Organizers / Volunteers / Venue Staff** (Ops Dashboard, with a "Viewing as" role selector) |
 
 ### What it delivers
 
@@ -11,7 +25,8 @@ GenAI-enabled copilot that improves **stadium navigation + crowd operations** fo
   - **Transportation + sustainability nudges** (transit/park&ride, refill + waste sorting guidance)
 - **Ops Dashboard**
   - **Real-time decision support**: gate risk ranking, queues, incidents (simulated telemetry)
-  - **GenAI action plans**: 15-minute congestion reduction plan + push/PA comms snippet
+  - **Sustainability snapshot**: arrival-mode split and estimated CO2 avoided
+  - **Role-aware GenAI action plans**: 15-minute congestion reduction plan + push/PA comms snippet, tailored for Venue Staff / Volunteer / Organizer
   - **Shift briefing generation**: 60-second briefing from telemetry + playbook context
 
 
@@ -21,6 +36,7 @@ GenAI-enabled copilot that improves **stadium navigation + crowd operations** fo
 - A **live LLM** generates natural-language guidance and operations recommendations.
 - A lightweight **RAG layer** retrieves relevant playbook/venue policy excerpts from `data/knowledge/*.md` and injects them into the prompt.
 - A small **routing engine** computes step-free vs fastest routes over a sample stadium graph (`data/stadium_map.json`) and feeds that route to the LLM for user-friendly directions.
+- **Resilient by design**: if the LLM provider times out, rate-limits, or is unreachable, the app returns a clear fallback message instead of crashing (see `tests/test_llm_resilience.py`).
 
 
 
@@ -107,3 +123,4 @@ The app implements accessibility on two levels:
 - Fan: “Where is the sensory room and how crowded is the nearest gate right now?”
 - Ops: “What should we do in the next 15 minutes to reduce congestion safely?”
 - Ops: “Generate a short push notification to redirect fans away from the most congested gate.”
+

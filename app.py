@@ -162,6 +162,7 @@ def _ops_page(*, llm, tournament: str, venue: str):
     st.subheader("Ops Dashboard")
     st.caption("Crowd-risk snapshot + GenAI decision support (demo with simulated telemetry).")
 
+    role = st.sidebar.selectbox("Viewing as", ["Venue Staff", "Volunteer", "Organizer"], index=0)
     language = st.sidebar.selectbox("Response language", ["English", "Spanish", "French"], index=0)
 
     telem = telemetry_snapshot()
@@ -177,6 +178,14 @@ def _ops_page(*, llm, tournament: str, venue: str):
     st.markdown("**Gate telemetry**")
     st.dataframe(gates_sorted, use_container_width=True)
 
+    st.markdown("**Sustainability snapshot**")
+    sustain = telem["sustainability"]
+    s1, s2, s3, s4 = st.columns(4)
+    s1.metric("Transit", f'{sustain["arrival_mode_split_pct"]["transit"]}%')
+    s2.metric("Park & Ride", f'{sustain["arrival_mode_split_pct"]["park_and_ride"]}%')
+    s3.metric("Rideshare/Taxi", f'{sustain["arrival_mode_split_pct"]["rideshare_or_taxi"]}%')
+    s4.metric("Est. CO2 avoided", f'{sustain["estimated_co2_avoided_kg"]:,.0f} kg')
+
     st.markdown("**Heuristic suggested actions (input to GenAI)**")
     st.json(telem["heuristic_actions"])
 
@@ -188,15 +197,20 @@ def _ops_page(*, llm, tournament: str, venue: str):
             st.markdown(m["content"])
 
     colA, colB = st.columns([3, 1])
-    ops_text = colA.text_input("Ask an ops question", value="What should we do in the next 15 minutes to reduce congestion safely?")
+    ops_text = colA.text_input(
+        "Ask an ops question", value="What should we do in the next 15 minutes to reduce congestion safely?"
+    )
     if colB.button("Generate plan"):
         st.session_state.ops_messages.append({"role": "user", "content": ops_text})
-        reply = assistant.respond(ops_text, language=language)
+        reply = assistant.respond(f"[Audience: {role}] {ops_text}", language=language)
         st.session_state.ops_messages.append({"role": "assistant", "content": reply})
         _rerun()
 
     if st.button("Generate shift briefing (last 30m)"):
-        prompt = "Create a 60-second shift briefing from telemetry: top risks, actions, and comms. Include accessibility considerations."
+        prompt = (
+            f"[Audience: {role}] Create a 60-second shift briefing from telemetry: top risks, actions, "
+            "sustainability notes, and comms. Include accessibility considerations."
+        )
         st.session_state.ops_messages.append({"role": "user", "content": prompt})
         reply = assistant.respond(prompt, language=language)
         st.session_state.ops_messages.append({"role": "assistant", "content": reply})

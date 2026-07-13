@@ -11,6 +11,32 @@ import httpx
 Role = Literal["system", "user", "assistant"]
 
 
+def _degraded_response(*, provider: str, error: Exception) -> str:
+    """
+    Never let a transient network/API failure crash the app mid-demo.
+    Surface a clear, honest message instead of an unhandled traceback.
+    """
+    kind = type(error).__name__
+    if isinstance(error, httpx.TimeoutException):
+        reason = "The request timed out."
+    elif isinstance(error, httpx.HTTPStatusError):
+        status = error.response.status_code if error.response is not None else "unknown"
+        reason = f"The provider returned an HTTP {status} error (e.g. rate limit or auth issue)."
+    elif isinstance(error, httpx.ConnectError):
+        reason = "Could not connect to the LLM provider."
+    else:
+        reason = f"Unexpected error ({kind})."
+
+    return (
+        "I couldn't reach the GenAI provider just now, so here's a graceful fallback "
+        "instead of an error page.\n\n"
+        f"**Provider**: `{provider}`\n"
+        f"**Issue**: {reason}\n\n"
+        "Please try again in a moment. If this persists, check the provider's API key, "
+        "rate limits, and base URL configuration."
+    )
+
+
 @dataclass(frozen=True)
 class ChatMessage:
     role: Role
@@ -55,15 +81,18 @@ class OllamaLLM:
             "stream": False,
             "options": {"temperature": float(temperature)},
         }
-        with httpx.Client(timeout=self._timeout_s) as client:
-            r = client.post(f"{self._base_url}/api/chat", json=payload)
-            r.raise_for_status()
-            data = r.json()
-            msg = data.get("message", {}) if isinstance(data, dict) else {}
-            content = msg.get("content")
-            if isinstance(content, str) and content.strip():
-                return content.strip()
-        return ""
+        try:
+            with httpx.Client(timeout=self._timeout_s) as client:
+                r = client.post(f"{self._base_url}/api/chat", json=payload)
+                r.raise_for_status()
+                data = r.json()
+                msg = data.get("message", {}) if isinstance(data, dict) else {}
+                content = msg.get("content")
+                if isinstance(content, str) and content.strip():
+                    return content.strip()
+            return ""
+        except Exception as exc:
+            return _degraded_response(provider=self.name(), error=exc)
 
 
 class OpenAICompatibleLLM:
@@ -98,18 +127,21 @@ class OpenAICompatibleLLM:
             "messages": [{"role": m.role, "content": m.content} for m in messages],
             "temperature": float(temperature),
         }
-        with httpx.Client(timeout=self._timeout_s, headers=headers) as client:
-            r = client.post(f"{self._base_url}/chat/completions", json=payload)
-            r.raise_for_status()
-            data = r.json()
-            try:
-                return (
-                    data["choices"][0]["message"]["content"].strip()
-                    if data["choices"][0]["message"]["content"]
-                    else ""
-                )
-            except Exception:
-                return json.dumps(data, indent=2)[:2000]
+        try:
+            with httpx.Client(timeout=self._timeout_s, headers=headers) as client:
+                r = client.post(f"{self._base_url}/chat/completions", json=payload)
+                r.raise_for_status()
+                data = r.json()
+                try:
+                    return (
+                        data["choices"][0]["message"]["content"].strip()
+                        if data["choices"][0]["message"]["content"]
+                        else ""
+                    )
+                except (KeyError, IndexError, TypeError):
+                    return json.dumps(data, indent=2)[:2000]
+        except Exception as exc:
+            return _degraded_response(provider=self.name(), error=exc)
 
 
 class MockLLM:
