@@ -1,0 +1,71 @@
+{
+  "pois": [
+    {
+      "id": "central_station",
+      "name": "Central Station",
+      "node_id": "STA_CENTRAL",
+      "tags": ["transit", "train", "metro", "bus"]
+    },
+    {
+      "id": "guest_services",
+      "name": "Guest Services & Accessibility Desk",
+      "node_id": "GUEST_SERVICES",
+      "tags": ["accessibility", "wheelchair", "hearing", "visual", "assistance", "lost and found"]
+    },
+    {
+      "id": "first_aid",
+      "name": "First Aid",
+      "node_id": "FIRST_AID",
+      "tags": ["medical", "injury", "help"]
+    },
+    {
+      "id": "sensory_room",
+      "name": "Sensory Relief Room",
+      "node_id": "SENSORY_ROOM",
+      "tags": ["sensory", "quiet", "autism", "neurodiversity", "accessibility"]
+    },
+    {
+      "id": "water_refill",
+      "name": "Water Refill Station",
+      "node_id": "WATER_REFILL",
+      "tags": ["water", "bottle", "sustainability"]
+    },
+    {
+      "id": "waste_sort",
+      "name": "Waste Sorting / Recycling",
+      "node_id": "WASTE_SORT",
+      "tags": ["recycle", "compost", "trash", "sustainability"]
+    },
+    {
+      "id": "gate_a",
+      "name": "Gate A",
+      "node_id": "GATE_A",
+      "tags": ["entry", "north"]
+    },
+    {
+      "id": "gate_b",
+      "name": "Gate B",
+      "node_id": "GATE_B",
+      "tags": ["entry", "east", "transit"]
+    },
+    {
+      "id": "gate_c",
+      "name": "Gate C",
+      "node_id": "GATE_C",
+      "tags": ["entry", "south", "drop-off"]
+    },
+    {
+      "id": "gate_d",
+      "name": "Gate D",
+      "node_id": "GATE_D",
+      "tags": ["entry", "west", "parking"]
+    },
+    {
+      "id": "section_120",
+      "name": "Section 120",
+      "node_id": "SECTION_120",
+      "tags": ["seating", "section", "lower bowl"]
+    }
+  ]
+}
+

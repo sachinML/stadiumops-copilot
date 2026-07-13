@@ -1,0 +1,113 @@
+{
+  "nodes": [
+    { "id": "STA_CENTRAL", "label": "Central Station (Transit Hub)", "kind": "transport" },
+    { "id": "PARK_RIDE", "label": "Park & Ride (Lot P)", "kind": "transport" },
+    { "id": "RIDESHARE", "label": "Rideshare / Taxi Drop-off", "kind": "transport" },
+
+    { "id": "PLAZA_N", "label": "North Plaza", "kind": "plaza" },
+    { "id": "PLAZA_E", "label": "East Transit Plaza", "kind": "plaza" },
+    { "id": "PLAZA_S", "label": "South Drop-off Plaza", "kind": "plaza" },
+    { "id": "PLAZA_W", "label": "West Parking Plaza", "kind": "plaza" },
+
+    { "id": "GATE_A", "label": "Gate A (North Plaza)", "kind": "gate" },
+    { "id": "GATE_B", "label": "Gate B (East Transit)", "kind": "gate" },
+    { "id": "GATE_C", "label": "Gate C (South Drop-off)", "kind": "gate" },
+    { "id": "GATE_D", "label": "Gate D (West Parking)", "kind": "gate" },
+
+    { "id": "SEC_A", "label": "Security Screening A", "kind": "security" },
+    { "id": "SEC_B", "label": "Security Screening B", "kind": "security" },
+    { "id": "SEC_C", "label": "Security Screening C", "kind": "security" },
+    { "id": "SEC_D", "label": "Security Screening D", "kind": "security" },
+
+    { "id": "CONCOURSE_N", "label": "Inner Concourse (North)", "kind": "concourse" },
+    { "id": "CONCOURSE_E", "label": "Inner Concourse (East)", "kind": "concourse" },
+    { "id": "CONCOURSE_S", "label": "Inner Concourse (South)", "kind": "concourse" },
+    { "id": "CONCOURSE_W", "label": "Inner Concourse (West)", "kind": "concourse" },
+
+    { "id": "GUEST_SERVICES", "label": "Guest Services & Accessibility Desk", "kind": "services" },
+    { "id": "FIRST_AID", "label": "First Aid", "kind": "services" },
+    { "id": "SENSORY_ROOM", "label": "Sensory Relief Room", "kind": "services" },
+    { "id": "WATER_REFILL", "label": "Water Refill Station", "kind": "amenity" },
+    { "id": "WASTE_SORT", "label": "Waste Sorting / Recycling Point", "kind": "amenity" },
+
+    { "id": "ELEVATOR_CORE", "label": "Elevator Core (Step-free)", "kind": "vertical" },
+    { "id": "STAIRS_CORE", "label": "Stairs Core", "kind": "vertical" },
+
+    { "id": "SECTION_120", "label": "Section 120 (Lower Bowl)", "kind": "seating", "level": "L1" },
+    { "id": "SECTION_101", "label": "Section 101 (Lower Bowl)", "kind": "seating", "level": "L1" },
+    { "id": "SECTION_132", "label": "Section 132 (Lower Bowl)", "kind": "seating", "level": "L1" }
+  ],
+  "edges": [
+    { "src": "STA_CENTRAL", "dst": "PLAZA_E", "minutes": 9, "accessible": true, "instructions": "Exit Central Station toward the stadium signs and follow the covered walkway to East Transit Plaza (~9 min)." },
+    { "src": "PLAZA_E", "dst": "STA_CENTRAL", "minutes": 9, "accessible": true, "instructions": "Follow the covered walkway back to Central Station (~9 min)." },
+
+    { "src": "PARK_RIDE", "dst": "PLAZA_W", "minutes": 11, "accessible": true, "instructions": "From Park & Ride Lot P, take the step-free path to West Parking Plaza (~11 min)." },
+    { "src": "PLAZA_W", "dst": "PARK_RIDE", "minutes": 11, "accessible": true, "instructions": "Follow the step-free path back to Park & Ride Lot P (~11 min)." },
+
+    { "src": "RIDESHARE", "dst": "PLAZA_S", "minutes": 4, "accessible": true, "instructions": "From rideshare/taxi drop-off, proceed to South Drop-off Plaza (~4 min)." },
+    { "src": "PLAZA_S", "dst": "RIDESHARE", "minutes": 4, "accessible": true, "instructions": "Follow the marked pick-up route to rideshare/taxi zone (~4 min)." },
+
+    { "src": "PLAZA_N", "dst": "GATE_A", "minutes": 2, "accessible": true, "instructions": "Walk straight across North Plaza to Gate A (~2 min)." },
+    { "src": "GATE_A", "dst": "PLAZA_N", "minutes": 2, "accessible": true, "instructions": "Exit toward North Plaza (~2 min)." },
+
+    { "src": "PLAZA_E", "dst": "GATE_B", "minutes": 2, "accessible": true, "instructions": "From East Transit Plaza, follow the queue barriers to Gate B (~2 min)." },
+    { "src": "GATE_B", "dst": "PLAZA_E", "minutes": 2, "accessible": true, "instructions": "Exit toward East Transit Plaza (~2 min)." },
+
+    { "src": "PLAZA_S", "dst": "GATE_C", "minutes": 2, "accessible": true, "instructions": "From South Drop-off Plaza, follow the marked entry lane to Gate C (~2 min)." },
+    { "src": "GATE_C", "dst": "PLAZA_S", "minutes": 2, "accessible": true, "instructions": "Exit toward South Drop-off Plaza (~2 min)." },
+
+    { "src": "PLAZA_W", "dst": "GATE_D", "minutes": 2, "accessible": true, "instructions": "From West Parking Plaza, proceed to Gate D (~2 min)." },
+    { "src": "GATE_D", "dst": "PLAZA_W", "minutes": 2, "accessible": true, "instructions": "Exit toward West Parking Plaza (~2 min)." },
+
+    { "src": "GATE_A", "dst": "SEC_A", "minutes": 3, "accessible": true, "instructions": "Join security screening at Screening A (~3 min including queue walk-up)." },
+    { "src": "SEC_A", "dst": "GATE_A", "minutes": 3, "accessible": true, "instructions": "Return to Gate A frontage (~3 min)." },
+
+    { "src": "GATE_B", "dst": "SEC_B", "minutes": 3, "accessible": true, "instructions": "Join security screening at Screening B (~3 min including queue walk-up)." },
+    { "src": "SEC_B", "dst": "GATE_B", "minutes": 3, "accessible": true, "instructions": "Return to Gate B frontage (~3 min)." },
+
+    { "src": "GATE_C", "dst": "SEC_C", "minutes": 3, "accessible": true, "instructions": "Join security screening at Screening C (~3 min including queue walk-up)." },
+    { "src": "SEC_C", "dst": "GATE_C", "minutes": 3, "accessible": true, "instructions": "Return to Gate C frontage (~3 min)." },
+
+    { "src": "GATE_D", "dst": "SEC_D", "minutes": 3, "accessible": true, "instructions": "Join security screening at Screening D (~3 min including queue walk-up)." },
+    { "src": "SEC_D", "dst": "GATE_D", "minutes": 3, "accessible": true, "instructions": "Return to Gate D frontage (~3 min)." },
+
+    { "src": "SEC_A", "dst": "CONCOURSE_N", "minutes": 2, "accessible": true, "instructions": "After screening, follow the signs to Inner Concourse (North) (~2 min)." },
+    { "src": "SEC_B", "dst": "CONCOURSE_E", "minutes": 2, "accessible": true, "instructions": "After screening, follow the signs to Inner Concourse (East) (~2 min)." },
+    { "src": "SEC_C", "dst": "CONCOURSE_S", "minutes": 2, "accessible": true, "instructions": "After screening, follow the signs to Inner Concourse (South) (~2 min)." },
+    { "src": "SEC_D", "dst": "CONCOURSE_W", "minutes": 2, "accessible": true, "instructions": "After screening, follow the signs to Inner Concourse (West) (~2 min)." },
+
+    { "src": "CONCOURSE_N", "dst": "CONCOURSE_E", "minutes": 5, "accessible": true, "instructions": "Walk clockwise along the inner concourse from North to East (~5 min)." },
+    { "src": "CONCOURSE_E", "dst": "CONCOURSE_S", "minutes": 5, "accessible": true, "instructions": "Walk clockwise along the inner concourse from East to South (~5 min)." },
+    { "src": "CONCOURSE_S", "dst": "CONCOURSE_W", "minutes": 5, "accessible": true, "instructions": "Walk clockwise along the inner concourse from South to West (~5 min)." },
+    { "src": "CONCOURSE_W", "dst": "CONCOURSE_N", "minutes": 5, "accessible": true, "instructions": "Walk clockwise along the inner concourse from West to North (~5 min)." },
+
+    { "src": "CONCOURSE_E", "dst": "CONCOURSE_N", "minutes": 6, "accessible": true, "instructions": "Walk counter-clockwise along the inner concourse from East to North (~6 min)." },
+    { "src": "CONCOURSE_S", "dst": "CONCOURSE_E", "minutes": 6, "accessible": true, "instructions": "Walk counter-clockwise along the inner concourse from South to East (~6 min)." },
+    { "src": "CONCOURSE_W", "dst": "CONCOURSE_S", "minutes": 6, "accessible": true, "instructions": "Walk counter-clockwise along the inner concourse from West to South (~6 min)." },
+    { "src": "CONCOURSE_N", "dst": "CONCOURSE_W", "minutes": 6, "accessible": true, "instructions": "Walk counter-clockwise along the inner concourse from North to West (~6 min)." },
+
+    { "src": "CONCOURSE_E", "dst": "GUEST_SERVICES", "minutes": 2, "accessible": true, "instructions": "From East Concourse, proceed to Guest Services & Accessibility Desk (~2 min)." },
+    { "src": "GUEST_SERVICES", "dst": "CONCOURSE_E", "minutes": 2, "accessible": true, "instructions": "Return to East Concourse (~2 min)." },
+
+    { "src": "CONCOURSE_S", "dst": "FIRST_AID", "minutes": 2, "accessible": true, "instructions": "From South Concourse, proceed to First Aid (~2 min)." },
+    { "src": "FIRST_AID", "dst": "CONCOURSE_S", "minutes": 2, "accessible": true, "instructions": "Return to South Concourse (~2 min)." },
+
+    { "src": "CONCOURSE_W", "dst": "SENSORY_ROOM", "minutes": 3, "accessible": true, "instructions": "From West Concourse, proceed to the Sensory Relief Room (~3 min)." },
+    { "src": "SENSORY_ROOM", "dst": "CONCOURSE_W", "minutes": 3, "accessible": true, "instructions": "Return to West Concourse (~3 min)." },
+
+    { "src": "CONCOURSE_N", "dst": "WATER_REFILL", "minutes": 2, "accessible": true, "instructions": "From North Concourse, proceed to the Water Refill Station (~2 min)." },
+    { "src": "WATER_REFILL", "dst": "CONCOURSE_N", "minutes": 2, "accessible": true, "instructions": "Return to North Concourse (~2 min)." },
+
+    { "src": "CONCOURSE_N", "dst": "WASTE_SORT", "minutes": 2, "accessible": true, "instructions": "From North Concourse, proceed to Waste Sorting / Recycling Point (~2 min)." },
+    { "src": "WASTE_SORT", "dst": "CONCOURSE_N", "minutes": 2, "accessible": true, "instructions": "Return to North Concourse (~2 min)." },
+
+    { "src": "CONCOURSE_E", "dst": "STAIRS_CORE", "minutes": 1, "accessible": true, "instructions": "Proceed to the Stairs Core (~1 min)." },
+    { "src": "STAIRS_CORE", "dst": "SECTION_120", "minutes": 2, "accessible": false, "instructions": "Take stairs to Section 120 vomitory (~2 min)." },
+    { "src": "CONCOURSE_E", "dst": "ELEVATOR_CORE", "minutes": 2, "accessible": true, "instructions": "Proceed to the Elevator Core (step-free) (~2 min)." },
+    { "src": "ELEVATOR_CORE", "dst": "SECTION_120", "minutes": 3, "accessible": true, "instructions": "Take elevator/step-free path to Section 120 access point (~3 min)." },
+
+    { "src": "CONCOURSE_N", "dst": "SECTION_101", "minutes": 3, "accessible": true, "instructions": "Follow Section 101 signage from North Concourse (~3 min)." },
+    { "src": "CONCOURSE_S", "dst": "SECTION_132", "minutes": 3, "accessible": true, "instructions": "Follow Section 132 signage from South Concourse (~3 min)." }
+  ]
+}
+
