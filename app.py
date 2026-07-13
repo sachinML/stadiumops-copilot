@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import asdict
 from pathlib import Path
+import textwrap
 
 import streamlit as st
 
@@ -34,44 +35,50 @@ def _apply_accessibility_css(*, high_contrast: bool, large_text: bool):
     - Optional high-contrast palette (targets >= 7:1 contrast, AAA-oriented)
     - Optional large-text mode (WCAG 1.4.4 Resize Text)
     """
-    css = """
-    <style>
-    /* Always show a strong, visible focus outline for keyboard navigation */
-    *:focus, *:focus-visible {
-        outline: 3px solid #0B5FFF !important;
-        outline-offset: 2px !important;
-    }
-    </style>
-    """
+    css = textwrap.dedent(
+        """\
+        <style>
+        /* Always show a strong, visible focus outline for keyboard navigation */
+        *:focus, *:focus-visible {
+            outline: 3px solid #0B5FFF !important;
+            outline-offset: 2px !important;
+        }
+        </style>
+        """
+    )
     if high_contrast:
-        css += """
-        <style>
-        html, body, [data-testid="stAppViewContainer"] {
-            background-color: #000000 !important;
-            color: #FFFFFF !important;
-        }
-        [data-testid="stSidebar"] {
-            background-color: #000000 !important;
-        }
-        a, .stMarkdown, .stText, label, p, span, div {
-            color: #FFFFFF !important;
-        }
-        .stButton>button {
-            background-color: #FFFF00 !important;
-            color: #000000 !important;
-            border: 2px solid #FFFFFF !important;
-        }
-        </style>
-        """
+        css += textwrap.dedent(
+            """\
+            <style>
+            html, body, [data-testid="stAppViewContainer"] {
+                background-color: #000000 !important;
+                color: #FFFFFF !important;
+            }
+            [data-testid="stSidebar"] {
+                background-color: #000000 !important;
+            }
+            a, .stMarkdown, .stText, label, p, span, div {
+                color: #FFFFFF !important;
+            }
+            .stButton>button {
+                background-color: #FFFF00 !important;
+                color: #000000 !important;
+                border: 2px solid #FFFFFF !important;
+            }
+            </style>
+            """
+        )
     if large_text:
-        css += """
-        <style>
-        html, body, [data-testid="stAppViewContainer"] * {
-            font-size: 1.15rem !important;
-            line-height: 1.6 !important;
-        }
-        </style>
-        """
+        css += textwrap.dedent(
+            """\
+            <style>
+            html, body, [data-testid="stAppViewContainer"] * {
+                font-size: 1.15rem !important;
+                line-height: 1.6 !important;
+            }
+            </style>
+            """
+        )
     st.markdown(css, unsafe_allow_html=True)
 
 
