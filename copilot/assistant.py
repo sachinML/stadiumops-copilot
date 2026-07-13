@@ -4,7 +4,6 @@ from dataclasses import dataclass
 import json
 from pathlib import Path
 import re
-from typing import Any
 
 from .llm import ChatMessage, LLM
 from .rag import format_retrieved
