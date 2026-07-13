@@ -202,17 +202,17 @@ def _ops_page(*, llm, tournament: str, venue: str):
     )
     if colB.button("Generate plan"):
         st.session_state.ops_messages.append({"role": "user", "content": ops_text})
-        reply = assistant.respond(f"[Audience: {role}] {ops_text}", language=language)
+        reply = assistant.respond(ops_text, language=language, role=role)
         st.session_state.ops_messages.append({"role": "assistant", "content": reply})
         _rerun()
 
     if st.button("Generate shift briefing (last 30m)"):
         prompt = (
-            f"[Audience: {role}] Create a 60-second shift briefing from telemetry: top risks, actions, "
+            "Create a 60-second shift briefing from telemetry: top risks, actions, "
             "sustainability notes, and comms. Include accessibility considerations."
         )
         st.session_state.ops_messages.append({"role": "user", "content": prompt})
-        reply = assistant.respond(prompt, language=language)
+        reply = assistant.respond(prompt, language=language, role=role)
         st.session_state.ops_messages.append({"role": "assistant", "content": reply})
         _rerun()
 

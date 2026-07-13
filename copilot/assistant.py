@@ -41,12 +41,13 @@ Rules:
 """
 
 
-def _ops_system_prompt(*, tournament: str, venue: str, language: str) -> str:
-    return f"""You are StadiumOps Copilot, a GenAI operations assistant for venue staff during {tournament} at {venue}.
+def _ops_system_prompt(*, tournament: str, venue: str, language: str, role: str) -> str:
+    return f"""You are StadiumOps Copilot, a GenAI operations assistant advising a {role} during {tournament} at {venue}.
 You turn real-time telemetry into decisions for crowd management, safety, accessibility, transport, and sustainability.
 
 Rules:
 - Respond in {language}.
+- Tailor tone and level of detail to a {role} (e.g. Volunteers need simple, immediate actions; Organizers may want the "why" behind a decision too).
 - Use short headings and bullet points.
 - Be specific (which gate, what action, who should do it, within what time).
 - If risks are high, propose a 15-minute action plan and a comms snippet for push notifications + PA.
@@ -155,7 +156,7 @@ class OpsAssistant:
         self._venue = venue
         self._kb_index, self._kb_chunks = load_kb(self._data_dir)
 
-    def respond(self, user_text: str, *, language: str = "English") -> str:
+    def respond(self, user_text: str, *, language: str = "English", role: str = "Venue Staff") -> str:
         telem = telemetry_snapshot()
         retrieved = self._kb_index.search(user_text, k=4)
         kb_context = format_retrieved([c for c, _s in retrieved])
@@ -163,7 +164,9 @@ class OpsAssistant:
         messages = [
             ChatMessage(
                 role="system",
-                content=_ops_system_prompt(tournament=self._tournament, venue=self._venue, language=language),
+                content=_ops_system_prompt(
+                    tournament=self._tournament, venue=self._venue, language=language, role=role
+                ),
             ),
             ChatMessage(
                 role="user",
