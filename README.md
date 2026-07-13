@@ -83,6 +83,24 @@ OPENAI_MODEL = "gpt-4o-mini"
 
 4. Click **Deploy**. You'll get a public URL to use as your "live preview" link.
 
+### Accessibility & inclusive design
+
+The app implements accessibility on two levels:
+
+**1. Domain-level (stadium accessibility for fans)**
+- Step-free routing engine (`copilot/routing.py`) that avoids stairs when a fan indicates a mobility need
+- Accessible-queue timing surfaced alongside standard queue times in the Ops Dashboard
+- Guest Services & Accessibility Desk, Sensory Relief Room routing and guidance
+- Multilingual assistance (English/Spanish/French/Arabic)
+
+**2. UI-level (WCAG-oriented interface design)**
+- Sidebar **"High-contrast mode"** toggle (black/white/yellow palette, targets AAA-level contrast)
+- Sidebar **"Large text mode"** toggle (WCAG 1.4.4 Resize Text)
+- Always-visible, high-contrast keyboard focus outlines app-wide (WCAG 2.4.7 Focus Visible)
+- No color-only indicators: status badges (e.g. "Live"/"Mock") always pair color with explicit text
+- All interactive controls (buttons, selects, inputs) have explicit visible text labels — no icon-only controls
+- Configured via `.streamlit/config.toml` with a WCAG AA-oriented default theme
+
 ### Suggested demo prompts
 
 - Fan: “How do I get from Central Station to Section 120? I need a step-free route.”

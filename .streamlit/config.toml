@@ -1,0 +1,8 @@
+[theme]
+# WCAG AA-oriented high-contrast theme (targets >= 4.5:1 contrast for body text)
+base = "light"
+primaryColor = "#0B5FFF"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F0F2F6"
+textColor = "#0E1117"
+font = "sans serif"

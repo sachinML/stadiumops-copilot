@@ -27,6 +27,54 @@ def _rerun():
         st.experimental_rerun()
 
 
+def _apply_accessibility_css(*, high_contrast: bool, large_text: bool):
+    """
+    Inject CSS for WCAG-oriented improvements:
+    - Always-visible keyboard focus outlines (WCAG 2.4.7 Focus Visible)
+    - Optional high-contrast palette (targets >= 7:1 contrast, AAA-oriented)
+    - Optional large-text mode (WCAG 1.4.4 Resize Text)
+    """
+    css = """
+    <style>
+    /* Always show a strong, visible focus outline for keyboard navigation */
+    *:focus, *:focus-visible {
+        outline: 3px solid #0B5FFF !important;
+        outline-offset: 2px !important;
+    }
+    </style>
+    """
+    if high_contrast:
+        css += """
+        <style>
+        html, body, [data-testid="stAppViewContainer"] {
+            background-color: #000000 !important;
+            color: #FFFFFF !important;
+        }
+        [data-testid="stSidebar"] {
+            background-color: #000000 !important;
+        }
+        a, .stMarkdown, .stText, label, p, span, div {
+            color: #FFFFFF !important;
+        }
+        .stButton>button {
+            background-color: #FFFF00 !important;
+            color: #000000 !important;
+            border: 2px solid #FFFFFF !important;
+        }
+        </style>
+        """
+    if large_text:
+        css += """
+        <style>
+        html, body, [data-testid="stAppViewContainer"] * {
+            font-size: 1.15rem !important;
+            line-height: 1.6 !important;
+        }
+        </style>
+        """
+    st.markdown(css, unsafe_allow_html=True)
+
+
 def _llm_banner(llm):
     cols = st.columns([2, 1])
     cols[0].markdown(f"**LLM provider**: `{llm.name()}`")
@@ -154,6 +202,15 @@ def main():
 
     st.set_page_config(page_title=settings.app_title, layout="wide")
     _init_state()
+
+    st.sidebar.markdown("### Accessibility options")
+    high_contrast = st.sidebar.checkbox(
+        "High-contrast mode", value=False, help="Switches to a black/white/yellow high-contrast palette."
+    )
+    large_text = st.sidebar.checkbox(
+        "Large text mode", value=False, help="Increases font size and line spacing app-wide."
+    )
+    _apply_accessibility_css(high_contrast=high_contrast, large_text=large_text)
 
     st.title(settings.app_title)
     st.caption(f"Venue: **{settings.demo_venue_name}** • Tournament: **{settings.demo_tournament_name}**")
